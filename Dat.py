@@ -192,6 +192,12 @@ async def main():
         if file_id == 0:
             file_id = client.add_file_with_hash(url, privacy_data_sha256)
         print("File ID:", file_id)
+        # Persist the file_id to a local file for later inference use
+        try:
+            with open("file_id.txt", "w", encoding="utf-8") as f:
+                f.write(str(file_id).strip())
+        except Exception as write_err:
+            print(f"Warning: failed to write file_id.txt: {write_err}")
         pub_key = client.get_public_key()
         encryption_key = rsa.encrypt(
             password.encode(),

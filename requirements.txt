@@ -1,0 +1,4 @@
+alith>=0.1.0
+python-dotenv>=1.0.1
+rsa>=4.9
+eth-account>=0.13.4

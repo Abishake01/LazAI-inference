@@ -1,9 +1,10 @@
 from os import getenv
+from pathlib import Path
 from dotenv import load_dotenv
 from alith import Agent, LazAIClient
 
 load_dotenv()
- 
+
 # 1. Join the iDAO, register user wallet on LazAI and deposit fees (Only Once)
 LAZAI_IDAO_ADDRESS = "0xD878Fa6c04d99654Fb38d1245Fc6Ec2acE8913f0" 
 
@@ -13,7 +14,7 @@ if not private_key:
 
 client = LazAIClient(private_key=private_key,)
 # Add by the inference node admin
- 
+
 # Use a smaller deposit amount to avoid overflow
 DEPOSIT_AMOUNT = 1000000  # Reduced from 10000000
 
@@ -35,9 +36,25 @@ except Exception:
     except Exception as e:
         print("Error adding user or depositing:", e)
 
- 
 # 2. Request the inference server with the settlement headers and DAT file id
-file_id = 2047  # Use the File ID you received from the Data Contribution step
+# Read FILE_ID from environment, else fall back to local file written by Dat.py
+file_id_str = getenv("FILE_ID")
+if not file_id_str:
+    fid_path = Path(__file__).with_name("file_id.txt")
+    if fid_path.exists():
+        try:
+            file_id_str = fid_path.read_text(encoding="utf-8").strip()
+        except Exception as e:
+            raise RuntimeError(f"Failed to read {fid_path.name}: {e}")
+if not file_id_str:
+    raise ValueError(
+        "FILE_ID is not set. Set FILE_ID in your environment or run Dat.py first to create file_id.txt."
+    )
+try:
+    file_id = int(file_id_str)
+except ValueError:
+    raise ValueError(f"Invalid FILE_ID '{file_id_str}'. Must be an integer.")
+
 url = client.get_inference_node(LAZAI_IDAO_ADDRESS)[1]
 print("url", url)
 
@@ -50,14 +67,18 @@ try:
 except Exception as e:
     print("Error checking inference account:", e)
 
+groq_api_key = getenv("GROQ_API_KEY")
+if not groq_api_key:
+    raise ValueError("GROQ_API_KEY environment variable is required for the selected model.")
+
 agent = Agent(
     # Note: replace with your model here
     model="llama-3.3-70b-versatile",
-    api_key=getenv("ALITH_API_KEY"),
+    api_key=groq_api_key,
     # OpenAI-compatible inference server URL
     base_url=f"{url}/v1",
     
     # Extra headers for settlement and DAT file anchoring
     extra_headers=client.get_request_headers(LAZAI_IDAO_ADDRESS, file_id=file_id),
 )
-print(agent.prompt("what is it?"))
+print(agent.prompt("Write a poem about LazAI and decentralized AI inference."))
