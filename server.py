@@ -1,4 +1,21 @@
 from alith.inference import run
  
-# Example: Using DeepSeek model from OpenRouter
-server = run(settlement=True, engine_type="openai", model="deepseek/deepseek-chat-v3.1:free")
+"""Run the server and use the following command to test the server
+ 
+curl http://localhost:8000/v1/chat/completions \
+-H "Content-Type: application/json" \
+-H "X-LazAI-User: 0xc3e98E8A9aACFc9ff7578C2F3BA48CA4477Ecf49" \
+-H "X-LazAI-Nonce: 123456" \
+-H "X-LazAI-Signature: HSDGYUSDOWP123" \
+-H "X-LazAI-Token-ID: 1" \
+-d '{
+  "model": "gpt-3.5-turbo",
+  "messages": [
+    {"role": "system", "content": "You are a helpful assistant"},
+    {"role": "user", "content": "What is the capital of France?"}
+  ],
+  "temperature": 0.7,
+  "max_tokens": 100
+}'
+"""
+server = run(model="gpt-3.5-turbo", settlement=True, engine_type="openai")
