@@ -37,7 +37,7 @@ except Exception:
 
  
 # 2. Request the inference server with the settlement headers and DAT file id
-file_id = 2091  # Use the File ID you received from the Data Contribution step
+file_id = 2091 #2133 # Use the File ID you received from the Data Contribution step
 url = client.get_inference_node(LAZAI_IDAO_ADDRESS)[1]
 print("url", url)
 
