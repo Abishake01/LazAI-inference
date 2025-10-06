@@ -9,7 +9,6 @@ from alith.data.storage import (
 from eth_account.messages import encode_defunct
 from os import getenv
 from dotenv import load_dotenv
-
 load_dotenv()
 import asyncio
 import requests
@@ -17,6 +16,7 @@ import rsa
 import aiohttp
 from pydantic import BaseModel
 from typing import Optional
+import hashlib
 
 
 class ActualPinataUploadResponse(BaseModel):
@@ -68,62 +68,13 @@ class CustomPinataIPFS(PinataIPFS):
 
 
 async def main():
-    private_key = getenv("PRIVATE_KEY")
-    if not private_key:
-        raise ValueError(
-            "PRIVATE_KEY environment variable is required. Set it in your shell or in a .env file."
-        )
-
-    client = Client(private_key=private_key)
+    client = Client(private_key=getenv("PRIVATE_KEY"))
     ipfs = CustomPinataIPFS()  # Use our custom implementation
     try:
         # 1. Prepare your privacy data and encrypt it
-        data_file_name = "my_self_intro.txt"
-        privacy_data = """
-      Name / nickname: Abishake — I prefer to be called Abi.
-
-I’m a full-stack developer who enjoys building end-to-end projects solo (backend → frontend).
-
-Tech stack & interests: Python, Django, React, Tailwind CSS, MySQL, and I often work with AI, Web3, smart contracts, and voice/agent systems.
-
-Current projects / goals mentioned:
-
-AI blog generator in Django (generates posts from YouTube links).
-
-Netflix clone in Django (Tailwind CSS).
-
-Web3 app “Devma” (hackathon/events), dark UI + multicolor gradients.
-
-Video call website in Django.
-
-AI Lawyer for Indian users (React/TypeScript frontend + Python backend), responses concise (5–8 lines) and Tanglish speech option.
-
-Agriculture AI assistant (crop recommendations, well drainage estimation, 3D well model).
-
-FIR registration & tracking platform (IPFS, biometric/Aadhaar validation, ai-lawyer-agent).
-
-POS billing site in React (auth, billing, reports).
-
-Inventory Management System (React + TypeScript + Supabase, want Google Drive storage).
-
-Many other ideas: Python→Rust converter, birthday wish website, EdTech platform, AI agents, etc.
-
-Teaching: I run weekly Python full-stack classes at college (20–40 students) and enjoy teaching beginners.
-
-I’ve worked on / asked about: connecting Django to MySQL on Railway, deploying on Render, Swagger for Django API, React Native + Django backend, integrating AI models into Flask, using Groq and Alith/LazAI, DAT token and LazAI concepts, and many tutorial-style posts.
-
-Recent activity: I posted a Medium article titled “Harnessing LazAI with Alith: A Step-by-Step Guide to Accessing and Using the Alith Framework with a Free API Key” (includes Python example). I wanted the article to sound more natural and interactive (not overly AI-generated).
-
-Personal preferences / style: I like interactive, natural, conversational blog tone (Abi-style), and prefer content that doesn’t read like it was written by an AI. I enjoy clean UI/UX, animations, and making projects visually appealing.
-
-Course & curriculum preferences: I created an 8-week Full-Stack course covering HTML/CSS/Bootstrap/JS, React + Spring Boot + MySQL, Django + MySQL, and MERN. Classes are 3 days/week with daily tasks and a weekly task.
-
-Misc technical preferences: I prefer Python 3.8+, virtual envs, using .env for secrets, and practical, example-driven tutorials.
-
-I’ve given me many project-specific requests and code snippets across 2024–2025 (details stored as conversation history and project notes).
-        """
-        
-        
+        data_file_name = "your_encrypted_data.txt"
+        privacy_data = "Your Privacy Data"
+        file_hash = hashlib.sha256(privacy_data.encode()).hexdigest()
         encryption_seed = "Sign to retrieve your encryption key"
         message = encode_defunct(text=encryption_seed)
         password = client.wallet.sign_message(message).signature.hex()
@@ -136,25 +87,15 @@ I’ve given me many project-specific requests and code snippets across 2024–2
         url = await ipfs.get_share_link(
             GetShareLinkOptions(token=token, id=file_meta.id)
         )
-        # 3. Upload the privacy url to LazAI (print tx hash first, then file id)
+        # 3. Upload the privacy url to LazAI
         file_id = client.get_file_id_by_url(url)
         if file_id == 0:
-            try:
-                res = client.add_file_tx(url)
-                # Ensure 0x prefix on tx hash
-                tx_hash = res["tx_hash"]
-                if not tx_hash.startswith("0x"):
-                    tx_hash = f"0x{tx_hash}"
-                print("Tx Hash:", tx_hash)
-                file_id = res["file_id"]
-                
-            except Exception:
-                # Fallback if add_file_tx not available
-                tx_hash = None
-                file_id = client.add_file(url)
-                print("File ID:", file_id)
-        else:
+            tx_hash = client.add_file_with_hash(url, file_hash)
+            print("Tx Hash:", tx_hash)
+            file_id = client.get_file_id_by_url(url)
             print("File ID:", file_id)
+        else:
+            print(f"File ID: {file_id} (existing, no new transaction)")
         # 4. Request proof in the verified computing node
         client.request_proof(file_id, 100)
         job_id = client.file_job_ids(file_id)[-1]
