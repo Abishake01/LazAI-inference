@@ -103,10 +103,25 @@ For me, tech isn’t just about code; it’s about creating something people can
         url = await ipfs.get_share_link(
             GetShareLinkOptions(token=token, id=file_meta.id)
         )
-        # 3. Upload the privacy url to LazAI
+        # 3. Upload the privacy url to LazAI (print tx hash first, then file id)
         file_id = client.get_file_id_by_url(url)
         if file_id == 0:
-            file_id = client.add_file(url)
+            try:
+                res = client.add_file_tx(url)
+                # Ensure 0x prefix on tx hash
+                tx_hash = res["tx_hash"]
+                if not tx_hash.startswith("0x"):
+                    tx_hash = f"0x{tx_hash}"
+                print("Tx Hash:", tx_hash)
+                file_id = res["file_id"]
+                print("File ID:", file_id)
+            except Exception:
+                # Fallback if add_file_tx not available
+                tx_hash = None
+                file_id = client.add_file(url)
+                print("File ID:", file_id)
+        else:
+            print("File ID:", file_id)
         # 4. Request proof in the verified computing node
         client.request_proof(file_id, 100)
         job_id = client.file_job_ids(file_id)[-1]
