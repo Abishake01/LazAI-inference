@@ -67,7 +67,7 @@ Reward requested for file id 2381
 
 If you want to include a screenshot of the terminal output, save the image as `mint-success.png` inside this folder and it will show here in Markdown:
 
-![mint-success.png](mint-success.png)
+![tnx.png](tnx.png)
 
 (Place the screenshot at: `Build_chill_w1/tnx.png`)
 
