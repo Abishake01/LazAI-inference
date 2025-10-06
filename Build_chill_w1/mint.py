@@ -80,14 +80,47 @@ async def main():
         # 1. Prepare your privacy data and encrypt it
         data_file_name = "my_self_intro.txt"
         privacy_data = """
-        Hey! I’m Abishake, but everyone calls me Abi 👋. 
-I’m super passionate about AI, Web3, and Python — especially when it comes to building projects that mix creativity with tech. 
-I love working on AI agents, Web3 integrations, and smart apps using Django, React, and Tailwind CSS. 
-I mostly build everything solo — from the backend logic to the frontend UI — because I enjoy seeing an idea come alive end to end. 
-Apart from coding, I love teaching; every week, I take Python full-stack classes at my college to help juniors learn programming in a simple and fun way. 
-I always get excited exploring new tech, whether it’s smart contracts, AI model integration, or voice-based AI systems. 
-I like keeping my projects clean, modern, and interactive — with smooth animations and a touch of my own style 😎. 
-For me, tech isn’t just about code; it’s about creating something people can actually feel and enjoy using.
+      Name / nickname: Abishake — I prefer to be called Abi.
+
+I’m a full-stack developer who enjoys building end-to-end projects solo (backend → frontend).
+
+Tech stack & interests: Python, Django, React, Tailwind CSS, MySQL, and I often work with AI, Web3, smart contracts, and voice/agent systems.
+
+Current projects / goals mentioned:
+
+AI blog generator in Django (generates posts from YouTube links).
+
+Netflix clone in Django (Tailwind CSS).
+
+Web3 app “Devma” (hackathon/events), dark UI + multicolor gradients.
+
+Video call website in Django.
+
+AI Lawyer for Indian users (React/TypeScript frontend + Python backend), responses concise (5–8 lines) and Tanglish speech option.
+
+Agriculture AI assistant (crop recommendations, well drainage estimation, 3D well model).
+
+FIR registration & tracking platform (IPFS, biometric/Aadhaar validation, ai-lawyer-agent).
+
+POS billing site in React (auth, billing, reports).
+
+Inventory Management System (React + TypeScript + Supabase, want Google Drive storage).
+
+Many other ideas: Python→Rust converter, birthday wish website, EdTech platform, AI agents, etc.
+
+Teaching: I run weekly Python full-stack classes at college (20–40 students) and enjoy teaching beginners.
+
+I’ve worked on / asked about: connecting Django to MySQL on Railway, deploying on Render, Swagger for Django API, React Native + Django backend, integrating AI models into Flask, using Groq and Alith/LazAI, DAT token and LazAI concepts, and many tutorial-style posts.
+
+Recent activity: I posted a Medium article titled “Harnessing LazAI with Alith: A Step-by-Step Guide to Accessing and Using the Alith Framework with a Free API Key” (includes Python example). I wanted the article to sound more natural and interactive (not overly AI-generated).
+
+Personal preferences / style: I like interactive, natural, conversational blog tone (Abi-style), and prefer content that doesn’t read like it was written by an AI. I enjoy clean UI/UX, animations, and making projects visually appealing.
+
+Course & curriculum preferences: I created an 8-week Full-Stack course covering HTML/CSS/Bootstrap/JS, React + Spring Boot + MySQL, Django + MySQL, and MERN. Classes are 3 days/week with daily tasks and a weekly task.
+
+Misc technical preferences: I prefer Python 3.8+, virtual envs, using .env for secrets, and practical, example-driven tutorials.
+
+I’ve given me many project-specific requests and code snippets across 2024–2025 (details stored as conversation history and project notes).
         """
         
         
@@ -114,7 +147,7 @@ For me, tech isn’t just about code; it’s about creating something people can
                     tx_hash = f"0x{tx_hash}"
                 print("Tx Hash:", tx_hash)
                 file_id = res["file_id"]
-                print("File ID:", file_id)
+                
             except Exception:
                 # Fallback if add_file_tx not available
                 tx_hash = None
