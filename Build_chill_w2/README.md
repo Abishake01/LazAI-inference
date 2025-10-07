@@ -48,7 +48,9 @@ python Dat.py
 ```
 Expected output includes a line like:
 ```
-File ID: <number>
+Tx Hash: 0x.....
+Proof request sent successfully
+Reward requested for file id 0000
 ```
 Copy and save this File ID for inference.
 

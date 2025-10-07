@@ -54,9 +54,9 @@ python mint.py
 When the run succeeds you should see console output similar to the example below (this is taken from a successful run):
 
 ```
-Tx Hash: 0xfaa2a00a210c7fee798196b6d0dce3edf71273a98e89e88a1eef8216a5530b5f
+Tx Hash: 0x.....
 Proof request sent successfully
-Reward requested for file id 2381
+Reward requested for file id 0000
 ```
 
 - `Tx Hash` — transaction hash for the on-chain action that registered or minted the file.
