@@ -64,16 +64,15 @@ class CustomPinataIPFS(PinataIPFS):
                     modified_time=pinata_response.updated_at,
                 )
         except aiohttp.ClientError as e:
-            raise StorageError(f"Network error: {str(e)}") from e
-
-
+            raise StorageError(f"Network error: {str(e)}")
+        
 async def main():
     client = Client(private_key=getenv("PRIVATE_KEY"))
     ipfs = CustomPinataIPFS()  # Use our custom implementation
     try:
         # 1. Prepare your privacy data and encrypt it
-        data_file_name = "your_encrypted_data.txt"
-        privacy_data = "Your Privacy Data"
+        data_file_name = "abi.txt"
+        privacy_data = "teaching is the best way to learn"
         file_hash = hashlib.sha256(privacy_data.encode()).hexdigest()
         encryption_seed = "Sign to retrieve your encryption key"
         message = encode_defunct(text=encryption_seed)

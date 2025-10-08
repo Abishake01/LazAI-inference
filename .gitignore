@@ -3,3 +3,4 @@ llm_logs/
 .env
 .venv/
 __pycache__/
+node_modules/
