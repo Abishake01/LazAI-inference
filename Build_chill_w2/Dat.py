@@ -93,7 +93,7 @@ async def main():
             tx_hash = client.add_file_with_hash(url, file_hash)
             print("Tx Hash:", tx_hash)
             file_id = client.get_file_id_by_url(url)
-            print("File ID:", file_id)
+            
         else:
             print(f"File ID: {file_id} (existing, no new transaction)")
         # 4. Request proof in the verified computing node
