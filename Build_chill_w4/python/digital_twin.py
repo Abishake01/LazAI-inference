@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from alith import Agent
 
 
-def create_preamble(character: dict) -> str:
+def AbiDigitalTWin(character: dict) -> str:
     bio = " ".join(character.get("bio", []))
     lore = " ".join(character.get("lore", []))
     adjectives = ", ".join(character.get("adjectives", []))
@@ -73,7 +73,7 @@ def main() -> None:
         return
 
     character = load_character(character_path)
-    preamble = create_preamble(character)
+    preamble = AbiDigitalTWin(character)
 
     agent = Agent(
         model="llama-3.3-70b-versatile",
