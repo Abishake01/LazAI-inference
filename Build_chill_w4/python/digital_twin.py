@@ -95,7 +95,7 @@ def main() -> None:
             print("\n👋 Thanks for chatting! Keep building in Web3! 🚀")
             break
 
-        if user_input.strip().lower() == "exit" | user_input.strip().lower() == "quit":
+        if user_input.strip().lower() == "exit":
             print("\n👋 Thanks for chatting! Keep building in Web3! 🚀")
             break
 
