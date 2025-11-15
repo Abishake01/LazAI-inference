@@ -3,6 +3,11 @@ import sys
 import json
 import uvicorn
 import argparse
+import os
+from dotenv import load_dotenv
+
+# Load environment variables FIRST before any alith imports
+load_dotenv()
 
 from fastapi import FastAPI, Response, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,34 +19,34 @@ from alith import MilvusStore, chunk_text
 from alith.query.types import QueryRequest
 from alith.query.settlement import QueryBillingMiddleware
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 # Get OpenAI API key from environment variable
 PRIVATE_KEY = os.getenv("PRIVATE_KEY")
 RSA_PRIVATE_KEY_BASE64 = os.getenv("RSA_PRIVATE_KEY_BASE64")
-# LLM_API_KEY = os.getenv("LLM_API_KEY")
-# LLM_BASE_URL = os.getenv("LLM_BASE_URL")
-# DSTACK_API_KEY = os.getenv("DSTACK_API_KEY")
+LLM_API_KEY = os.getenv("LLM_API_KEY")
+LLM_BASE_URL = os.getenv("LLM_BASE_URL")
+DSTACK_API_KEY = os.getenv("DSTACK_API_KEY")
 
 
 # Set the API key for OpenAI
 os.environ["PRIVATE_KEY"] = PRIVATE_KEY
 os.environ["RSA_PRIVATE_KEY_BASE64"] = RSA_PRIVATE_KEY_BASE64
-# os.environ["LLM_API_KEY"] = LLM_API_KEY
-# os.environ["LLM_BASE_URL"] = LLM_BASE_URL
-# os.environ["DSTACK_API_KEY"] = DSTACK_API_KEY
+
+os.environ["LLM_API_KEY"] = LLM_API_KEY
+os.environ["LLM_BASE_URL"] = LLM_BASE_URL
+os.environ["DSTACK_API_KEY"] = DSTACK_API_KEY
+
+
 
 
 # Logging configuration
+
 logging.basicConfig(
     stream=sys.stdout,
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
-client = Client()
+client = Client(private_key=PRIVATE_KEY)
 app = FastAPI(title="Alith LazAI Privacy Data Query Node", version="1.0.0")
 
 store = MilvusStore()
@@ -128,7 +133,7 @@ def run(host: str = "0.0.0.0", port: int = 8000, *, settlement: bool = False):
         app.add_middleware(QueryBillingMiddleware)
 
     return uvicorn.run(app, host=host, port=port)
-
+# thirumurugan7/my-tee-app
 
 if __name__ == "__main__":
     description = "Alith data query server. Host your own embedding models and support language query!"

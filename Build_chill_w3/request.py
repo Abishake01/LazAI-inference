@@ -28,7 +28,7 @@ print(
         f"{url}/query/rag",
         headers=headers,
         json={
-            "file_id": 10, #change with your file_id 
+            "file_id": 2411, #change with your file_id 
             "query": "summarise the best character?",
         },
     ).json(),

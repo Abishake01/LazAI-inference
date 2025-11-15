@@ -52,5 +52,5 @@ You will see a welcome banner. Type your messages and hit Enter. Type `exit` to 
 ## Notes
 - The app uses Groq's OpenAI-compatible endpoint at `https://api.groq.com/openai/v1`.
 - We automatically map `GROQ_API_KEY` -> `OPENAI_API_KEY` at runtime.
-- Default model is `llama3-70b-8192`. You can adjust it in `digital_twin.py`.
+- Default model is `llama-3.3-70b-versatile`. You can adjust it in `digital_twin.py`.
 - If you see an API key error, confirm `GROQ_API_KEY` (or `OPENAI_API_KEY`) is set and restart your terminal.

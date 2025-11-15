@@ -1,3 +1,4 @@
 from alith.inference import run
-
-server = run(model="gpt-3.5-turbo", settlement=True, engine_type="openai")
+ 
+# Example: Using DeepSeek model from OpenRouter
+server = run(model="llama-3.3-70b-versatile", settlement=False, engine_type="openai")

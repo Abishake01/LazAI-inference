@@ -71,8 +71,13 @@ async def main():
     ipfs = CustomPinataIPFS()  # Use our custom implementation
     try:
         # 1. Prepare your privacy data and encrypt it
-        data_file_name = "abi.txt"
-        privacy_data = "teaching is the best way to learn"
+        data_file_name = "new.txt"
+        privacy_data = '''I have one friend named naveen, I love one girl Rishika ,
+        but my close friend naveen loves Rishika , I thought they are friends 
+        but later I found that they both are love each other. 
+        Now they married and living happily.
+        Me just thinking about her every time.
+        '''
         file_hash = hashlib.sha256(privacy_data.encode()).hexdigest()
         encryption_seed = "Sign to retrieve your encryption key"
         message = encode_defunct(text=encryption_seed)
